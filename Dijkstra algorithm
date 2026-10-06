@@ -1,0 +1,60 @@
+import java.util.*;
+
+public class Dijkstra {
+
+    static final int INF = 99999;
+
+    public static void main(String[] args) {
+
+        int[][] graph = {
+            {0, 4, 1, INF, INF},
+            {4, 0, 2, 5, INF},
+            {1, 2, 0, 8, 10},
+            {INF, 5, 8, 0, 2},
+            {INF, INF, 10, 2, 0}
+        };
+
+        int n = graph.length;
+        int source = 0;
+
+        int[] distance = new int[n];
+        boolean[] visited = new boolean[n];
+
+        // Initialize distances
+        Arrays.fill(distance, INF);
+        distance[source] = 0;
+
+        // Dijkstra's Algorithm
+        for (int count = 0; count < n - 1; count++) {
+
+            int u = -1;
+
+            // Find vertex with minimum distance
+            for (int i = 0; i < n; i++) {
+                if (!visited[i] && (u == -1 || distance[i] < distance[u])) {
+                    u = i;
+                }
+            }
+
+            visited[u] = true;
+
+            // Update distances of adjacent vertices
+            for (int v = 0; v < n; v++) {
+
+                if (!visited[v] &&
+                    graph[u][v] != INF &&
+                    distance[u] + graph[u][v] < distance[v]) {
+
+                    distance[v] = distance[u] + graph[u][v];
+                }
+            }
+        }
+
+        // Print result
+        System.out.println("Shortest distances from source vertex " + source + ":");
+
+        for (int i = 0; i < n; i++) {
+            System.out.println("To vertex " + i + " = " + distance[i]);
+        }
+    }
+}
